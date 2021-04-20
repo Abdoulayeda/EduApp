@@ -37,14 +37,18 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark  bg-dark">
-    <a class="navbar-brand" href="#">EduApp</a>
+    <a class="navbar-brand" href="">EduApp</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="true" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="navbar-collapse collapse show" id="navbarColor01" style="">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/">Site
+                <a class="nav-link" href="{{ route('root') }}">Admin
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Retour vers le site
                 </a>
             </li>
         </ul>

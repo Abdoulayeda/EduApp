@@ -2,7 +2,26 @@
 @section('contenu')
 
     <div class="container mt-5">
-        <h2>Liste des etudiants</h2>
+        <h2>Liste des etudiants de la classe {{ $classe->nom  }}</h2>
+        <div>
+            @if(session('storeetudiant'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('storeetudiant') }}
+                </div>
+            @endif
+            @if(session('updateetudiant'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('updateetudiant') }}
+                </div>
+            @endif
+            @if(session('deleteetudiant'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('deleteetudiant') }}
+                </div>
+            @endif
+
+        </div>
+
         <table class=" table table-striped">
             <thead>
             <th>Numéro</th>

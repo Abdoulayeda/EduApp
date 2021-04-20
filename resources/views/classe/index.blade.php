@@ -2,29 +2,28 @@
 @section('contenu')
 
     <div class="container mt-5">
-        <h2>Liste des classes</h2>
-        {{-- <div>
-             <a href="{{ route('classes.create') }}">Ajouter une classe</a>
-         </div>--}}
+        <h2>Liste des classes de {{ $universite->libelle }}</h2>
 
-        {{--  <div>
-              @if(session('classeedit'))
+          <div>
+              @if(session('storeclasse'))
                   <div class="alert alert-success" role="alert">
-                      {{ session('classeedit') }}
+                      {{ session('storeclasse') }}
                   </div>
               @endif
-              @if(session('classesave'))
+              @if(session('updateclasse'))
                   <div class="alert alert-success" role="alert">
-                      {{ session('classesave') }}
+                      {{ session('updateclasse') }}
                   </div>
               @endif
-              @if(session('classedelete'))
+              @if(session('deleteclasse'))
                   <div class="alert alert-danger" role="alert">
-                      {{ session('classedelete') }}
+                      {{ session('deleteclasse') }}
                   </div>
               @endif
 
-          </div>--}}
+          </div>
+
+
         <table class=" table table-striped">
             <thead>
             <th>Numéro</th>

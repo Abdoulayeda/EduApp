@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
 
-    // Les fonctions pour l'université
+    // Les fonctions pour ajouter, moditer et supprimer une université
     public function index()
     {
         $universites = Universite::all();
@@ -24,16 +24,15 @@ class AdminController extends Controller
 
     public function store(Request $request)
     {
-      /*  $request->validate([
-           'libelle'=>'unique',
+       $request->validate([
+           'libelle'=>'required|unique:universites',
             'description'=>'min:10'
-        ]);*/
+        ]);
         $universite = new Universite();
 
         $image = $request->file('photo');
         $nomimage = 'produit'.time().'.'.$image->getClientOriginalExtension();
         $path = $image->storeAS('imageuniversites',$nomimage);
-
 
         $universite->libelle = $request->libelle;
         $universite->photo = $nomimage;
@@ -50,10 +49,9 @@ class AdminController extends Controller
 
     public function update(Request $request,$id)
     {
-     /*   $request->validate([
-            'libelle'=>'unique',
+        $request->validate([
             'description'=>'min:10'
-        ]);*/
+        ]);
         $universite=Universite::find($id);
         $universite->libelle = $request->libelle;
         $universite->description = $request->description;
@@ -70,9 +68,7 @@ class AdminController extends Controller
 
  }
 
- // Les fonctions pour la classe
-
- // On creer une fonction createecole qui va créer une ecole en fonction d'une université
+ // Les fonctions pour ajouter, moditer et supprimer une classe
 
     Public function classeindex($id)
     {
@@ -89,12 +85,14 @@ class AdminController extends Controller
 
     public function classestore(Request $request)
     {
+
         $classe = new Classe();
         $classe->nom = $request->nom;
         $classe->description = $request->description;
         $classe->universites_id = $request->universite_id;
         $classe->save();
-      //  return redirect()->route('root')->with('classecreate', 'Classe créer avec success');
+        return redirect()->route('classeliste', [$classe->universite])->with('storeclasse', 'La classe a été créer avec success');
+
     }
 
     public function classeedit($id)
@@ -110,23 +108,21 @@ class AdminController extends Controller
         $classe->nom = $request->nom;
         $classe->description = $request->description;
         $classe->universites_id = $request->universite_id;
-
         $classe->save();
-        return redirect()->route('root')->with('classeedit', 'Classe modifié avec success');
-
+        return redirect()->route('classeliste', [$classe->universite])->with('updateclasse', 'La classe a été modifié avec success');
     }
 
     public function classedestroy($id)
     {
         $classe = Classe::find($id);
         $classe->delete($id);
-        return redirect()->route('root')->with('classedelete', 'Classe supprimer avec success');
+       return redirect()->route('classeliste', [$classe->universite])->with('deleteclasse','La classe a été supprimer avec success');
 
     }
 
 
 /*
- *Les fonctionc pour les etudiants
+ *Les fonctions pour ajouter, moditer et supprimer  un etudiant
  */
 
     public function etudiantindex($id)
@@ -142,13 +138,14 @@ class AdminController extends Controller
     {
         $classe = Classe::find($id);
         return view('etudiant.create')->with(compact('classe'));
+
     }
 
     public function etudiantstore(Request $request)
     {
 
         $request->validate([
-            'email'=>'required|unique:etudiants',
+            'email'=>'required|email|unique:etudiants',
             'telephone'=>'required|unique:etudiants',
             'nom'=>'required|min:2|max:50',
             'prenom'=>'required|min:3'
@@ -164,7 +161,7 @@ class AdminController extends Controller
         $etudiant->photoprofil = $nomimage;
         $etudiant->classes_id = $request->classe_id;
         $etudiant->save();
-        return redirect()->route('root')->with('etudiantcreate', 'Etudiant créer avec success');
+        return redirect()->route('listeetudiant', [$etudiant->classe])->with('storeetudiant', 'Etudiant créer avec succès');
     }
 
 
@@ -177,8 +174,8 @@ class AdminController extends Controller
     public function etudiantupdate(Request $request, $id)
     {
         $request->validate([
-            'email'=>'required|unique:etudiants',
-            'telephone'=>'required|unique:etudiants',
+            'email'=>'required|email',
+            'telephone'=>'required',
             'nom'=>'required|min:2|max:50',
             'prenom'=>'required|min:3'
         ]);
@@ -190,14 +187,16 @@ class AdminController extends Controller
         $etudiant->photoprofil = $request->photo;
         $etudiant->classes_id = $request->classe_id;
         $etudiant->save();
-        return redirect()->route('root')->with('etudiantcreate', 'Etudiant créer avec success');
+        return redirect()->route('listeetudiant', [$etudiant->classe])->with('updateetudiant', 'Etudiant modifier avec succès');
+
     }
 
     public function etudiantdestroy($id)
     {
         $etudiant = Etudiant::find($id);
         $etudiant->delete($id);
-        return redirect()->route('root')->with('etudiantdelete', 'Etudiant supprimer avec success');
+        return redirect()->route('listeetudiant', [$etudiant->classe])->with('deleteetudiant', 'Etudiant supprimer avec succès');
+
     }
 
 
